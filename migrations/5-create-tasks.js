@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Tasks', {
+    await queryInterface.createTable('tasks', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       text: {
@@ -18,13 +19,21 @@ module.exports = {
         type: Sequelize.STRING,
       },
       tableId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'tables',
+          key: 'id',
+        },
       },
       creatorId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
-      },
-      assignedUsers: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       priority: {
         type: Sequelize.DECIMAL,
@@ -40,6 +49,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Tasks');
+    await queryInterface.dropTable('tasks');
   },
 };

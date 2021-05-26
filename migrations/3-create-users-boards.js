@@ -1,21 +1,28 @@
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Tables', {
+    await queryInterface.createTable('assigned_users_boards', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-      },
-      boardId: {
+      boards_id: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'boards',
+          key: 'id',
+        },
       },
-      order: {
-        type: Sequelize.DECIMAL,
+      assigned_users_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +35,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Tables');
+    await queryInterface.dropTable('assigned_users_boards');
   },
 };
